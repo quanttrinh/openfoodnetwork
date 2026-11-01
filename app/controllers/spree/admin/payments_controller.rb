@@ -86,10 +86,25 @@ module Spree
             redirect_to admin_order_payments_path(@order)
           else
             flash.now[:error] = Spree.t(:refund_unsuccessful, scope: 'paypal') +
-                                " (#{response.errors.first.long_message})"
+                                " (#{paypal_refund_error_message(response)})"
             render
           end
         end
+      end
+
+      def paypal_refund_error_message(response)
+        if response.respond_to?(:errors) && response.errors.present?
+          error = response.errors.first
+          return error.long_message if error.respond_to?(:long_message)
+        end
+
+        message = if response.respond_to?(:error_message)
+                    response.error_message
+                  else
+                    response.to_s
+                  end
+
+        message.presence || Spree.t(:refund_unsuccessful, scope: 'paypal')
       end
 
       def credit_customer

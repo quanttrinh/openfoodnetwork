@@ -12,6 +12,7 @@ module Spree
 
       PAYMENT_METHODS = %w{
         Spree::Gateway::PayPalExpress
+        Spree::Gateway::PayPalRest
         Spree::Gateway::StripeSCA
         Spree::PaymentMethod::Check
         Spree::PaymentMethod::Taler

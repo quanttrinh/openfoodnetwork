@@ -166,7 +166,7 @@ module Openfoodnetwork
         loader.setup
         loader.eager_load
 
-        if Rails.env.development?
+        if Rails.env.development? && ENV["OFN_DISABLE_REPORTING_LISTENER"].blank?
           require 'listen'
           Listen.to("lib/reporting") { loader.reload }.start
         end
